@@ -123,7 +123,7 @@ import { Canvas2DProduct } from "@cdyw/asd-2d";
 import dayjs from 'dayjs';
 
 export default {
-  name: "Scetion2D",
+  name: "Section2D",
   components: {
     Vue3DraggableResizable,
   },

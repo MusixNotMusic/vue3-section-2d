@@ -1,18 +1,18 @@
 <script>
 import { ref, onMounted } from 'vue'
-// import Scetion2D from '../packages/src/Scetion2D.vue'
+// import Section2D from '../packages/src/Section2D.vue'
 
-// import { Scetion2D } from '@cdyw/vue3-section-2d'
-// import '@cdyw/vue3-section-2d/dist/style.css';
+import { Section2D } from '@cdyw/vue3-section-2d'
+import '@cdyw/vue3-section-2d/dist/style.css';
 
-import { Scetion2D } from '../dist/@cdyw/vue3-section-2d.es'
-import  '../dist/style.css'
+// import { Section2D } from '../dist/@cdyw/vue3-section-2d.es'
+// import  '../dist/style.css'
 
-console.log('Scetion2D ==>', Scetion2D)
+console.log('Section2D ==>', Section2D)
 
 export default {
   name: 'App',
-  components: { Scetion2D },
+  components: { Section2D },
   setup() {
     const sectionRef = ref(null)
     const colorList = [
@@ -159,7 +159,7 @@ export default {
 <template>
  
   <div class="section-2d">
-    <Scetion2D ref="sectionRef"></Scetion2D>
+    <Section2D ref="sectionRef"></Section2D>
   </div>
 </template>
 
