@@ -1,6 +1,14 @@
 <script>
 import { ref, onMounted } from 'vue'
-import Scetion2D from '../packages/src/Scetion2D.vue'
+// import Scetion2D from '../packages/src/Scetion2D.vue'
+
+// import { Scetion2D } from '@cdyw/vue3-section-2d'
+// import '@cdyw/vue3-section-2d/dist/style.css';
+
+import { Scetion2D } from '../dist/@cdyw/vue3-section-2d.es'
+import  '../dist/style.css'
+
+console.log('Scetion2D ==>', Scetion2D)
 
 export default {
   name: 'App',
@@ -117,7 +125,9 @@ export default {
             "color": "171,146,239"
         }
     ]
-    
+    import('../dist/@cdyw/vue3-section-2d.es').then((module) => {
+      console.log('import ==>', module)
+    })
     const coords = [[104, 30], [104, 40]];
     const loadFile = () => {
       if (sectionRef.value) {

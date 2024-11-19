@@ -2,7 +2,7 @@
   "name": "@cdyw/vue3-section-2d",
   "author": "MusixNotMusic<https://github.com/MusixNotMusic>",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.7",
   "main": "dist/vue3-section-2d.umd.js",
   "module": "dist/vue3-section-2d.es.js",
   "exports": {
@@ -33,9 +33,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cdyw/asd-2d": "file:D:/Projects/Code/WRIS-WebGraphCommonLib/trunk/web-main/asd-2d",
-    "@cdyw/asd-utils": "file:D:/Projects/Code/WRIS-WebGraphCommonLib/trunk/web-main/asd-utils",
-    "@turf/turf": "^7.1.0",
+    "@cdyw/asd-2d": "^1.0.15",
+    "@cdyw/asd-utils": "^1.0.11",
+    "@cdyw/vue3-section-2d": "^1.0.5",
+    "@turf/along": "^7.1.0",
+    "@turf/helpers": "^7.1.0",
+    "@turf/length": "^7.1.0",
     "dayjs": "^1.10.7",
     "element-plus": "^1.1.0-beta.24",
     "events": "^3.3.0",

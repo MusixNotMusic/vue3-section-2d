@@ -1,9 +1,4 @@
 import Scetion2D from './src/Scetion2D.vue'
+// import demo from './src/demo.vue'
 
-const plugin = {
-  install(app) {
-    app.component(Scetion2D.name, Scetion2D)
-  }
-}
-
-export { Scetion2D, plugin }
+export { Scetion2D }

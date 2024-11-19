@@ -11,12 +11,12 @@ import path from 'path'
 export default defineConfig({
   plugins: [
     vue(),
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+    // AutoImport({
+    //   resolvers: [ElementPlusResolver()],
+    // }),
+    // Components({
+    //   resolvers: [ElementPlusResolver()],
+    // }),
   ],
   build: {
     emptyOutDir: false, // 避免dist被清空
@@ -27,12 +27,19 @@ export default defineConfig({
     },
     rollupOptions: {
       // 把不想打包进你的包的包排除掉
-      external: ["vue", "element-plus"],
+      external: [
+        "vue", 
+        'vue3-draggable-resizable', 
+        '@turf/length', 
+        '@turf/helpers', 
+        '@cdyw/asd-utils/capture/picture', 
+        '@cdyw/asd-2d', 
+        'dayjs'
+      ],
       output: {
         // 在 UMD 构建模式下为这些外部化的依赖提供一个全局变量
         globals: {
-          vue: "Vue",
-          "element-plus": "elementPlus",
+          vue: "vue"
         },
       },
     },

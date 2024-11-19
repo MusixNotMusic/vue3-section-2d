@@ -104,7 +104,7 @@
     </Vue3DraggableResizable>
 </template>
 
-<script>
+<script lang="ts">
 import {
   onMounted,
   onUnmounted,
@@ -114,7 +114,8 @@ import {
   nextTick,
 } from "vue";
 import Vue3DraggableResizable from "vue3-draggable-resizable";
-import * as turf from "@turf/turf";
+import length from "@turf/length";
+import { lineString } from "@turf/helpers";
 import { decompress } from "@cdyw/asd-utils/compress/ZstdDecompress";
 import { RCSPZFormat } from "@cdyw/asd-utils/FileParser/RCSPZ/RCSPZFormat";
 import { screenshot } from "@cdyw/asd-utils/capture/picture";
@@ -137,7 +138,7 @@ export default {
       default: Date.now()
     },
     theme: {
-      default: 'blue'
+      default: 'green'
     }
   },
 
@@ -208,8 +209,8 @@ export default {
     const render = (rawData, uparData, coords, colorCardList) => {
       decompress(rawData).then(decompress).then(bytes => RCSPZFormat.Parse(new Uint8Array(bytes))).then((rcspzData) => {
         console.log('rcspzData ==>', rcspzData);
-        const line = turf.lineString(coords);
-        const length = turf.length(line, { units: "kilometers" });
+        const line = lineString(coords);
+        const lengthKM = length(line, { units: "kilometers" });
 
         // 计算一个比例
         const attention = [];
@@ -242,14 +243,14 @@ export default {
               colorCard: colorCard,
               // realValue: realValueFunc,
               maxAltitude: state.altitude,
-              maxLength: length,
+              maxLength: lengthKM,
               margin: { top: 20, bottom: 30, left: 30, right: 30}
             },
             rcspzData,
             uparData
           );
         }
-        rcspzInstance.maxLength = length;
+        rcspzInstance.maxLength = lengthKM;
         rcspzInstance.rcspzData = rcspzData;
         rcspzInstance.rerender();
       })
@@ -319,8 +320,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../theme/blue.scss';
-@import '../theme/green.scss';
+@use '../theme/blue.scss';
+@use '../theme/green.scss';
 
 .cut-popup-window {
     background: var(--theme-bg);
