@@ -2,7 +2,7 @@
   "name": "@cdyw/vue3-section-2d",
   "author": "MusixNotMusic<https://github.com/MusixNotMusic>",
   "private": false,
-  "version": "1.0.9",
+  "version": "1.0.10",
   "main": "dist/vue3-section-2d.umd.js",
   "module": "dist/vue3-section-2d.es.js",
   "exports": {
