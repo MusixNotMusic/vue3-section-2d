@@ -2,7 +2,7 @@
   "name": "@cdyw/vue3-section-2d",
   "author": "MusixNotMusic<https://github.com/MusixNotMusic>",
   "private": false,
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "dist/vue3-section-2d.umd.js",
   "module": "dist/vue3-section-2d.es.js",
   "exports": {
@@ -33,9 +33,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cdyw/asd-2d": "^1.0.15",
+    "@cdyw/asd-2d": "^1.0.17",
     "@cdyw/asd-utils": "^1.0.11",
-    "@cdyw/vue3-section-2d": "^1.0.8",
+    "@cdyw/vue3-section-2d": "^1.0.11",
     "@turf/along": "^7.1.0",
     "@turf/helpers": "^7.1.0",
     "@turf/length": "^7.1.0",
