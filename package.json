@@ -35,7 +35,7 @@
   "dependencies": {
     "@cdyw/asd-2d": "^1.0.15",
     "@cdyw/asd-utils": "^1.0.11",
-    "@cdyw/vue3-section-2d": "^1.0.7",
+    "@cdyw/vue3-section-2d": "^1.0.8",
     "@turf/along": "^7.1.0",
     "@turf/helpers": "^7.1.0",
     "@turf/length": "^7.1.0",

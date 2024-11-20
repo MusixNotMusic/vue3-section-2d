@@ -104,7 +104,7 @@
     </Vue3DraggableResizable>
 </template>
 
-<script lang="ts">
+<script>
 import {
   onMounted,
   onUnmounted,
@@ -139,16 +139,30 @@ export default {
     },
     theme: {
       default: 'green'
+    },
+    top: {
+      type: Number,
+      default: 70
+    },
+    right: {
+      type: Number,
+      default: 80
+    },
+    width: {
+      type: Number,
+      default: 550
+    },
+    height: {
+      type: Number,
+      default: 380
     }
   },
 
   setup(props, { emit }) {
-    const top = 70;
-    const right = 80;
-    const width = 550;
-    const height = 380;
-    
-
+    // const top = 70;
+    // const right = 80;
+    // const width = 550;
+    // const height = 380;
     let rcspzInstance;
 
     let state = reactive({
@@ -169,17 +183,18 @@ export default {
       showWindow: true,
       loading: false,
 
-      boxWidth: width,
-      boxHeight: height,
-      y: top,
-      x: document.body.clientWidth - width - right,
-      w: width,
-      h: height,
+      boxWidth: props.width,
+      boxHeight: props.height,
+      y: props.top,
+      x: document.body.clientWidth - props.width - props.right,
+      w: props.width,
+      h: props.height,
       right: 0,
       active: false,
       elMsg: null
     });
 
+    console.log('state ==>', state)
 
     const popupWindowRef = ref(null);
     const contentRef = ref(null);
@@ -271,8 +286,8 @@ export default {
     };
 
     const setRight = () => {
-      if (state.x + state.w + right > document.body.clientWidth) {
-        state.x = document.body.clientWidth - state.w - right;
+      if (state.x + state.w + props.right > document.body.clientWidth) {
+        state.x = document.body.clientWidth - state.w - props.right;
       }
     };
 

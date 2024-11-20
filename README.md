@@ -11,7 +11,11 @@
 |---|---|---|
 |attentionPoints|props: \<Array\>|关注点|
 |curTimeStamp|props: \<Number\>|当前时间，截图保存图片时间|
-|theme|props: \<String\>|主题，用户自定义颜色，也可覆盖|
+|theme|props: \<String\>|主题，用户自定义颜色，也可覆盖, blue和green|
+|top|props: \<Number\>|绝对定位 top|
+|right|props: \<Number\>|绝对定位 right|
+|width|props: \<Number\>|视图宽度|
+|height|props: \<Number\>|视图高度|
 |close|emit: \<Function\>|订阅事件，关闭窗口|
 |reset|emit: \<Function\>|订阅事件，重新选择|
 

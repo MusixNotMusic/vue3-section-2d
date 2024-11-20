@@ -2,11 +2,11 @@
 import { ref, onMounted } from 'vue'
 // import Section2D from '../packages/src/Section2D.vue'
 
-import { Section2D } from '@cdyw/vue3-section-2d'
-import '@cdyw/vue3-section-2d/dist/style.css';
+// import { Section2D } from '@cdyw/vue3-section-2d'
+// import '@cdyw/vue3-section-2d/dist/style.css';
 
-// import { Section2D } from '../dist/@cdyw/vue3-section-2d.es'
-// import  '../dist/style.css'
+import { Section2D } from '../dist/@cdyw/vue3-section-2d.es'
+import  '../dist/style.css'
 
 console.log('Section2D ==>', Section2D)
 
@@ -159,7 +159,7 @@ export default {
 <template>
  
   <div class="section-2d">
-    <Section2D ref="sectionRef"></Section2D>
+    <Section2D ref="sectionRef" theme="blue" :top="150" :left="100" :width="600" :height="400"></Section2D>
   </div>
 </template>
 

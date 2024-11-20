@@ -243,6 +243,24 @@
     vue "^3.2.45"
     vue3-draggable-resizable "^1.6.5"
 
+"@cdyw/vue3-section-2d@^1.0.8":
+  version "1.0.8"
+  resolved "http://222.18.149.18:4873/@cdyw/vue3-section-2d/-/vue3-section-2d-1.0.8.tgz#1fdc9cb85b7a956da4bcdf094c420e9ad15a7e0a"
+  integrity sha512-8si6mKjQM6O1gAOWyNmze7OLqXAJoGv2v7IsBGPnLjsua08xgGzznK1pQOyrtmqcu/ZIlGkzFSLU6lIV7KiA3g==
+  dependencies:
+    "@cdyw/asd-2d" "^1.0.15"
+    "@cdyw/asd-utils" "^1.0.11"
+    "@cdyw/vue3-section-2d" "^1.0.7"
+    "@turf/along" "^7.1.0"
+    "@turf/helpers" "^7.1.0"
+    "@turf/length" "^7.1.0"
+    dayjs "^1.10.7"
+    element-plus "^1.1.0-beta.24"
+    events "^3.3.0"
+    sass "^1.77.4"
+    vue "^3.2.45"
+    vue3-draggable-resizable "^1.6.5"
+
 "@csstools/cascade-layer-name-parser@^1.0.13", "@csstools/cascade-layer-name-parser@^1.0.2":
   version "1.0.13"
   resolved "http://222.18.149.18:4873/@csstools/cascade-layer-name-parser/-/cascade-layer-name-parser-1.0.13.tgz#6900157489bc53da1f6a66eaccd432025f6cd6fb"
