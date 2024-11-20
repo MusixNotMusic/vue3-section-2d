@@ -77,6 +77,374 @@ export default {
 2. 文件解析功能在asd-utils FileParser中
 3. 图片截图也封装到asd-utils capture中
 
+## 外部封装代替原来Cut2D
+```js
+<template>
+    <Section2D ref="sectionRef" v-if="showWindow" 
+      theme="blue"
+      :width="500"
+      :height="300"
+      @close="close()" 
+      @reset="$emit('reSelectClick')">
+    </Section2D>
+</template>
+
+<script>
+import {
+  onMounted,
+  onUnmounted,
+  watch,
+  ref,
+} from "vue";
+import { useStore } from "vuex";
+import { getRawFile1, getMenu } from "@/utils/http/compresiveHttp";
+import { ElMessage } from "element-plus";
+import { getMiniIOStaticUrl } from "@/core/path/replaceUrlByEnv";
+import dayjs from 'dayjs';
+
+import { Section2D } from '@cdyw/vue3-section-2d';
+
+import '@cdyw/vue3-section-2d/dist/style.css';
+
+export default {
+  name: "cutPopup2V",
+  components: {
+    Section2D
+  },
+  emits: ["closeCutWindow", "reSelectClick"],
+  props: {
+    coords: {
+      type: Array,
+      default: () => [],
+    },
+    cutStart: {
+      type: Boolean,
+      default: false,
+    },
+    cutFinish: {
+      type: Boolean,
+      default: false,
+    },
+    cutDestroy: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  setup(props, { emit }) {
+
+    const sectionRef = ref(null);
+    const showWindow = ref(false);
+  
+
+    const store = useStore();
+
+    watch(
+      () => props.cutFinish,
+      (val, old) => {
+        // console.log("props.cutFinish ", val);
+        if (val && props.coords && props.coords.length > 0) {
+          showWindow.value = true;
+          loadingData(true)
+          getCutData(props.coords)
+            .then(async (rawData) => {
+              getUparGasLayerData().then((uparData) => {
+                loadingData(false)
+                setTimeout(() => {
+                  init(rawData, uparData);
+                })
+              })
+            })
+            .catch(() => {
+              loadingData(false)
+            });
+        }
+      }
+    );
+
+    watch(
+      () => props.cutDestroy,
+      (val, old) => {
+        if (val) {
+          showWindow.value = false;
+        }
+      }
+    );
+
+    watch(() => store.state.comprehensive.curTimeObj,  (val, old) => {
+        if (val) {
+          showWindow.value = true;
+          loadingData(true)
+          getCutData(props.coords)
+            .then(async (rawData) => {
+              getUparGasLayerData().then((uparData) => {
+                loadingData(false)
+                setTimeout(() => {
+                  init(rawData, uparData);
+                })
+              })
+            })
+            .catch(() => {
+              loadingData(false)
+            });
+        }
+      })
+
+    // methods
+
+    const getCutData = (coords) => {
+      let time = store.state.comprehensive.curTimeObj;
+      let params = {
+        time: time,
+        range: JSON.stringify(coords),
+        productId: 111,
+      };
+
+      return getMenu("/nowcast/observe/timeline/radar/cut", params).then(
+          (res) => {
+            console.log('res', res)
+            if (res.code === 0 && res.data) {
+              return getMiniIOStaticUrl( res.data );
+            } else {
+              ElMessage.error(res.msg);
+            }
+          }
+      ).then(async(data) => {
+        if (data) {
+          return await getRawFile1(data)
+        }
+      });
+    };
+
+
+    const getUparGasLayerData = () => {
+      let time = store.state.comprehensive.curTimeObj;
+      let params = {
+        // time: '2023-08-18 18:00:00',
+        time: dayjs(time * 1000).format('YYYY-MM-DD HH:mm:ss'),
+        stationId: 53845,
+      };
+
+      return getMenu("/nowcast/observe/upar/gasLayer", params).then(
+          (res) => {
+            if (res.code === 0 && res.data) {
+              return res.data;
+            } else {
+              ElMessage.error(res.msg);
+            }
+          }
+      );
+    }
+
+    const loadingData = (yes) => {
+      if (sectionRef.value) sectionRef.value.loadingData(yes);
+    }
+
+    const init = async (rawData, uparData) => {
+      if (sectionRef.value) {
+        const colorCardList = store.state.systemset.radarColorList["Z"].colorCodes;
+        sectionRef.value.render(rawData, uparData, props.coords, colorCardList);
+      }
+    };
+
+    const close = () => {
+      showWindow.value = true;
+      emit('closeCutWindow');
+    }
+
+    onMounted(() => {
+    });
+
+    onUnmounted(() => {
+    });
+    return {
+      sectionRef,
+      showWindow,
+      close
+    };
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+
+</style>
+
+```
+
+## demo
+```js
+<script>
+import { ref, onMounted } from 'vue'
+
+import { Section2D } from '@cdyw/vue3-section-2d'
+import '@cdyw/vue3-section-2d/dist/style.css';
+
+
+console.log('Section2D ==>', Section2D)
+
+export default {
+  name: 'App',
+  components: { Section2D },
+  setup() {
+    const sectionRef = ref(null)
+    
+    const colorList = [
+        {
+            "val": -20,
+            "minIndex": 0,
+            "maxIndex": 26,
+            "color": "0,0,3"
+        },
+        {
+            "val": -5,
+            "minIndex": 26,
+            "maxIndex": 56,
+            "color": "127,194,229"
+        },
+        {
+            "val": 0,
+            "minIndex": 56,
+            "maxIndex": 66,
+            "color": "0,174,165"
+        },
+        {
+            "val": 5,
+            "minIndex": 66,
+            "maxIndex": 76,
+            "color": "27,32,245"
+        },
+        {
+            "val": 10,
+            "minIndex": 76,
+            "maxIndex": 86,
+            "color": "64,162,245"
+        },
+        {
+            "val": 15,
+            "minIndex": 86,
+            "maxIndex": 96,
+            "color": "91,236,236"
+        },
+        {
+            "val": 20,
+            "minIndex": 96,
+            "maxIndex": 106,
+            "color": "95,253,16"
+        },
+        {
+            "val": 25,
+            "minIndex": 106,
+            "maxIndex": 116,
+            "color": "73,198,10"
+        },
+        {
+            "val": 30,
+            "minIndex": 116,
+            "maxIndex": 126,
+            "color": "50,143,5"
+        },
+        {
+            "val": 35,
+            "minIndex": 126,
+            "maxIndex": 136,
+            "color": "254,253,24"
+        },
+        {
+            "val": 40,
+            "minIndex": 136,
+            "maxIndex": 146,
+            "color": "226,191,18"
+        },
+        {
+            "val": 45,
+            "minIndex": 146,
+            "maxIndex": 156,
+            "color": "244,143,17"
+        },
+        {
+            "val": 50,
+            "minIndex": 156,
+            "maxIndex": 166,
+            "color": "240,10,13"
+        },
+        {
+            "val": 55,
+            "minIndex": 166,
+            "maxIndex": 176,
+            "color": "202,6,9"
+        },
+        {
+            "val": 60,
+            "minIndex": 176,
+            "maxIndex": 186,
+            "color": "181,5,7"
+        },
+        {
+            "val": 65,
+            "minIndex": 186,
+            "maxIndex": 196,
+            "color": "242,35,240"
+        },
+        {
+            "val": 70,
+            "minIndex": 196,
+            "maxIndex": 206,
+            "color": "114,14,132"
+        },
+        {
+            "val": 95,
+            "minIndex": 206,
+            "maxIndex": 255,
+            "color": "171,146,239"
+        }
+    ]
+   
+    const coords = [[104, 30], [104, 40]];
+    const loadFile = () => {
+      if (sectionRef.value) {
+        sectionRef.value.loadingData(true);
+        fetch('/data/RCSPZ.zst').then(res => res.arrayBuffer()).then((buffer) => {
+          console.log('buffer', buffer)
+          
+          setTimeout(() => {
+            sectionRef.value.loadingData(false);
+            sectionRef.value.render(buffer, null, coords, colorList);
+          }, 1000)
+        })
+      }
+    }
+    onMounted(() => {
+      setTimeout(() => {
+        loadFile(); 
+      }, 100)
+    })
+
+    return {
+      sectionRef
+    }
+  }
+} 
+
+</script>
+
+<template>
+ 
+  <div class="section-2d">
+    <Section2D ref="sectionRef" theme="blue" :top="150" :left="100" :width="600" :height="400"></Section2D>
+  </div>
+</template>
+
+<style scoped>
+.section-2d {
+  display: flex;
+  position: relative;
+}
+</style>
+
+
+```
+
 ## source code
 ```js
 <template>
@@ -612,173 +980,6 @@ export default {
         font-weight: 400;
         color: #ffffff;
     }
-}
-</style>
-
-```
-
-## demo
-```js
-<script setup>
-<script>
-import { ref, onMounted } from 'vue'
-import Scetion2D from '../packages/src/Scetion2D.vue'
-
-export default {
-  name: 'App',
-  components: { Scetion2D },
-  setup() {
-    const sectionRef = ref(null)
-    const colorList = [
-        {
-            "val": -20,
-            "minIndex": 0,
-            "maxIndex": 26,
-            "color": "0,0,3"
-        },
-        {
-            "val": -5,
-            "minIndex": 26,
-            "maxIndex": 56,
-            "color": "127,194,229"
-        },
-        {
-            "val": 0,
-            "minIndex": 56,
-            "maxIndex": 66,
-            "color": "0,174,165"
-        },
-        {
-            "val": 5,
-            "minIndex": 66,
-            "maxIndex": 76,
-            "color": "27,32,245"
-        },
-        {
-            "val": 10,
-            "minIndex": 76,
-            "maxIndex": 86,
-            "color": "64,162,245"
-        },
-        {
-            "val": 15,
-            "minIndex": 86,
-            "maxIndex": 96,
-            "color": "91,236,236"
-        },
-        {
-            "val": 20,
-            "minIndex": 96,
-            "maxIndex": 106,
-            "color": "95,253,16"
-        },
-        {
-            "val": 25,
-            "minIndex": 106,
-            "maxIndex": 116,
-            "color": "73,198,10"
-        },
-        {
-            "val": 30,
-            "minIndex": 116,
-            "maxIndex": 126,
-            "color": "50,143,5"
-        },
-        {
-            "val": 35,
-            "minIndex": 126,
-            "maxIndex": 136,
-            "color": "254,253,24"
-        },
-        {
-            "val": 40,
-            "minIndex": 136,
-            "maxIndex": 146,
-            "color": "226,191,18"
-        },
-        {
-            "val": 45,
-            "minIndex": 146,
-            "maxIndex": 156,
-            "color": "244,143,17"
-        },
-        {
-            "val": 50,
-            "minIndex": 156,
-            "maxIndex": 166,
-            "color": "240,10,13"
-        },
-        {
-            "val": 55,
-            "minIndex": 166,
-            "maxIndex": 176,
-            "color": "202,6,9"
-        },
-        {
-            "val": 60,
-            "minIndex": 176,
-            "maxIndex": 186,
-            "color": "181,5,7"
-        },
-        {
-            "val": 65,
-            "minIndex": 186,
-            "maxIndex": 196,
-            "color": "242,35,240"
-        },
-        {
-            "val": 70,
-            "minIndex": 196,
-            "maxIndex": 206,
-            "color": "114,14,132"
-        },
-        {
-            "val": 95,
-            "minIndex": 206,
-            "maxIndex": 255,
-            "color": "171,146,239"
-        }
-    ]
-    
-    const coords = [[104, 30], [104, 40]];
-    const loadFile = () => {
-      if (sectionRef.value) {
-        sectionRef.value.loadingData(true);
-        fetch('/data/RCSPZ.zst').then(res => res.arrayBuffer()).then((buffer) => {
-          console.log('buffer', buffer)
-          
-          setTimeout(() => {
-            sectionRef.value.loadingData(false);
-            sectionRef.value.render(buffer, null, coords, colorList);
-          }, 1000)
-        })
-      }
-    }
-    onMounted(() => {
-      setTimeout(() => {
-        loadFile(); 
-      }, 100)
-    })
-
-    return {
-      sectionRef
-    }
-  }
-} 
-
-</script>
-
-<template>
- 
-  <div class="section-2d">
-    <Scetion2D ref="sectionRef"></Scetion2D>
-  </div>
-</template>
-
-<style scoped>
-.section-2d {
-  display: flex;
-  position: relative;
 }
 </style>
 

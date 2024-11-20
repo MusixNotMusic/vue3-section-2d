@@ -1,12 +1,9 @@
 <script>
 import { ref, onMounted } from 'vue'
-// import Section2D from '../packages/src/Section2D.vue'
 
-// import { Section2D } from '@cdyw/vue3-section-2d'
-// import '@cdyw/vue3-section-2d/dist/style.css';
+import { Section2D } from '@cdyw/vue3-section-2d'
+import '@cdyw/vue3-section-2d/dist/style.css';
 
-import { Section2D } from '../dist/@cdyw/vue3-section-2d.es'
-import  '../dist/style.css'
 
 console.log('Section2D ==>', Section2D)
 
@@ -15,6 +12,7 @@ export default {
   components: { Section2D },
   setup() {
     const sectionRef = ref(null)
+    
     const colorList = [
         {
             "val": -20,
@@ -125,9 +123,7 @@ export default {
             "color": "171,146,239"
         }
     ]
-    import('../dist/@cdyw/vue3-section-2d.es').then((module) => {
-      console.log('import ==>', module)
-    })
+   
     const coords = [[104, 30], [104, 40]];
     const loadFile = () => {
       if (sectionRef.value) {

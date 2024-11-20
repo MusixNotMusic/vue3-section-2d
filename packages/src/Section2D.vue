@@ -81,9 +81,9 @@
             class="content"
             ref="contentRef"
             v-loading="loading"
-            element-loading-background="rgba(255, 255, 255, 0.4)"
+            element-loading-background="rgba(255, 255, 255, 0.5)"
         >
-            <div class="viewBox" ref="viewBoxRef">
+            <div class="viewBox" ref="viewBoxRef" :style="{ visibility: loading ? 'hidden' : 'visible'}">
                 <canvas class="proCanvas" ref="canvasRef"></canvas>
                 <div
                     class="tooltipRef"
